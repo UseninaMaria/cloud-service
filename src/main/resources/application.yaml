@@ -1,0 +1,32 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: diplom-cloud
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: true
+    change-log: classpath:liquibase/changelog-master.yml
+  jpa:
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+myapp:
+  alias:
+    api:
+      file: "/file"
+      list: "/list"
+jwt:
+  signing:
+    key: E3A1D9ECE25E1F5293C0D9F98B5BF4FA6C9DF91FAC2B4FC165F142C8F4335A17
+  key:
+    expiration: 259200000
+cors:
+    credentials: true
+    origins:
+      http://localhost:8080
+    methods: ""
+    headers: ""
