@@ -2,16 +2,13 @@ package ru.netology.diplomcloud.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileListResponseDto {
-    private String filename;
-    private Long size;
+@Builder
+public class ResponseMessageDto {
+    private String message;
 }

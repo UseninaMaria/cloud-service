@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,6 +24,7 @@ import static ru.netology.diplomcloud.util.AppConstant.AUTH_TOKEN;
 
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class LoginAuthenticationFilter extends OncePerRequestFilter {
     private final SecurityService securityService;
     private final SecurityRepository securityRepository;
@@ -44,6 +46,7 @@ public class LoginAuthenticationFilter extends OncePerRequestFilter {
                     String authToken = securityService.generatedAuthToken(authentication);
 
                     securityRepository.putAuthToken(username, authToken);
+                    log.info("User " + username + " authentication. Token: " + authToken);
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     response.setStatus(HttpServletResponse.SC_OK);
                     response.getWriter().write(mapper.writeValueAsString(new LoginResponseDto(authToken)));

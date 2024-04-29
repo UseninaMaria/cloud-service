@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ import java.util.Optional;
 import static ru.netology.diplomcloud.util.AppConstant.AUTH_TOKEN;
 import static ru.netology.diplomcloud.util.AppConstant.BEARER;
 import static ru.netology.diplomcloud.util.AppConstant.USERNAME;
-
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
@@ -30,6 +31,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         throws
         ServletException, IOException {
         String authorizationKey = request.getHeader(AUTH_TOKEN);
+        log.info("AuthTokenFilter: " + authorizationKey);
         if (Optional.ofNullable(authorizationKey).isPresent() && authorizationKey.startsWith(BEARER)) {
             authorizationKey = authorizationKey.replace(BEARER, "").trim();
             try {

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.diplomcloud.dto.request.EditFileNameRequestDto;
-import ru.netology.diplomcloud.dto.response.FileListResponseDto;
 import ru.netology.diplomcloud.entity.Cloud;
 import ru.netology.diplomcloud.entity.User;
 import ru.netology.diplomcloud.exceptions.InternalServerException;
@@ -17,7 +16,6 @@ import ru.netology.diplomcloud.repository.CloudRepository;
 import ru.netology.diplomcloud.repository.UserRepository;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,16 +39,10 @@ public class CloudService {
         }
     }
 
-    public List<FileListResponseDto> getFileList(String authToken, Integer limit) {
+    public List<Cloud> getFileList(String authToken, Integer limit) {
         try {
             User user = getUserByAuthToken(authToken);
-            List<Cloud> storages = cloudRepository.findAllByUser(user, Limit.of(limit));
-            List<FileListResponseDto> fileListResponses = new ArrayList<>();
-
-            for (Cloud storage : storages) {
-                fileListResponses.add(new FileListResponseDto(storage.getFileName(), storage.getFileSize()));
-            }
-            return fileListResponses;
+            return cloudRepository.findAllByUser(user, Limit.of(limit));
         } catch (Exception e) {
             throw new InternalServerException("Error getting file list " + e.getMessage());
         }
