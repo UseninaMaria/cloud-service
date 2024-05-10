@@ -20,6 +20,7 @@ import java.util.Optional;
 import static ru.netology.diplomcloud.util.AppConstant.AUTH_TOKEN;
 import static ru.netology.diplomcloud.util.AppConstant.BEARER;
 import static ru.netology.diplomcloud.util.AppConstant.USERNAME;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -30,6 +31,9 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws
         ServletException, IOException {
+        log.debug("doFilterInternal() - start. Request = {}, response = {}, filterChain = {}",
+            request, response, filterChain);
+
         String authorizationKey = request.getHeader(AUTH_TOKEN);
         log.info("AuthTokenFilter: " + authorizationKey);
         if (Optional.ofNullable(authorizationKey).isPresent() && authorizationKey.startsWith(BEARER)) {
@@ -46,6 +50,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+        log.debug("doFilterInternal() - end. AuthTokenFilter = {}", authorizationKey);
     }
 
     @Override
